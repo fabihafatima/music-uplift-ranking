@@ -1,0 +1,25 @@
+data:
+  n_tracks: 50000
+  n_months: 6
+  promotion_rate: 0.25
+  seed: 42
+  raw_dir: data/raw
+  feature_store_dir: data/feature_store
+  bq_dataset: music_uplift_local
+
+uplift:
+  primary_learner: x_learner
+  base_estimator: sklearn_gb  # xgboost | lightgbm when libomp available
+  n_estimators: 400
+  max_depth: 8
+  learning_rate: 0.05
+
+ranking:
+  primary_ranker: xgb_ranker  # lambdamart | xgb_ranker (falls back to sklearn GB)
+  top_n: 500
+  train_fraction: 0.7
+
+evaluation:
+  output_dir: artifacts/evaluation
+  plots_dir: artifacts/plots
+  dashboards_dir: artifacts/dashboards

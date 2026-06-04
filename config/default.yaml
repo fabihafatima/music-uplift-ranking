@@ -1,0 +1,46 @@
+data:
+  n_tracks: 50000
+  promotion_rate: 0.25
+  seed: 42
+  output_dir: data/raw
+
+features:
+  categorical:
+    - genre
+    - artist_tier
+    - release_recency_bucket
+    - playlist_inclusion
+  numeric:
+    - artist_monthly_listeners
+    - track_popularity_score
+    - prior_stream_velocity
+    - social_mention_count
+    - days_since_release
+    - acousticness
+    - danceability
+    - existing_playlist_placements
+
+model:
+  learner: x_learner  # t_learner | x_learner | r_learner
+  base_estimator: sklearn_gb  # lightgbm when libomp is available
+  propensity_model: logistic
+  n_estimators: 300
+  max_depth: 8
+  learning_rate: 0.05
+  min_child_samples: 50
+  random_state: 42
+
+training:
+  test_size: 0.2
+  val_size: 0.15
+  stratify_treatment: true
+  model_dir: artifacts/models
+  metrics_dir: artifacts/metrics
+
+inference:
+  top_k: 100
+  min_uplift: 0.0
+
+serving:
+  host: "0.0.0.0"
+  port: 8000
